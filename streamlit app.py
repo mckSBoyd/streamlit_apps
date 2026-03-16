@@ -1,7 +1,18 @@
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark import Session
 
-session = get_active_session()
+@st.cache_resource
+def get_session():
+    return Session.builder.configs({
+        "account": st.secrets["snowflake"]["account"],
+        "user": st.secrets["snowflake"]["user"],
+        "password": st.secrets["snowflake"]["password"],
+        "warehouse": st.secrets["snowflake"]["warehouse"],
+        "database": st.secrets["snowflake"]["database"],
+        "schema": st.secrets["snowflake"]["schema"],
+    }).create()
+
+session = get_session()
 
 st.title("Airbnb Permit Application")
 st.markdown("Complete this form to apply for a short-term rental permit.")
@@ -49,8 +60,8 @@ with st.form("permit_application"):
             st.error("You must agree to the terms and conditions.")
         else:
             try:
-                session.sql(f"""
-                    INSERT INTO AIRBNB.RAW.PERMIT_APPLICATIONS 
+                session.sql("""
+                    INSERT INTO PERMIT_APPLICATIONS 
                     (FIRST_NAME, LAST_NAME, EMAIL, PHONE, PROPERTY_ADDRESS, CITY, STATE, ZIP_CODE,
                      PROPERTY_TYPE, BEDROOMS, PERMIT_TYPE, MAX_GUESTS, IS_PRIMARY_RESIDENCE, 
                      HAS_LIABILITY_INSURANCE, ADDITIONAL_NOTES)
