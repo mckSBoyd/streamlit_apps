@@ -71,7 +71,7 @@ def show_login():
             st.session_state["role"] = user["ROLE"]
             st.session_state["department_id"] = user["DEPARTMENT_ID"]
             st.session_state["logged_in"] = True
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("Invalid username or password.")
 
@@ -111,7 +111,7 @@ def show_sidebar():
         if st.button("Sign out"):
             for key in list(st.session_state.keys()):
                 del st.session_state[key]
-            st.experimental_rerun()
+            st.rerun()
 
     return page
 
@@ -223,7 +223,7 @@ def show_all_reviews():
     selected_id = st.number_input("Enter document ID to view details", min_value=1, step=1)
     if st.button("View document"):
         st.session_state["selected_doc_id"] = int(selected_id)
-        st.experimental_rerun()
+        st.rerun()
 
 
 def show_my_reviews():
@@ -260,7 +260,7 @@ def show_my_reviews():
     selected_id = st.number_input("Enter document ID to view details", min_value=1, step=1)
     if st.button("View document"):
         st.session_state["selected_doc_id"] = int(selected_id)
-        st.experimental_rerun()
+        st.rerun()
 
 
 def show_submit_document():
@@ -571,7 +571,7 @@ def show_document_detail():
                     ).collect()
 
                 st.success("Comment added.")
-                st.experimental_rerun()
+                st.rerun()
     else:
         st.caption("This document review is complete.")
 
