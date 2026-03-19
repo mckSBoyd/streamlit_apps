@@ -2,8 +2,19 @@ import streamlit as st
 import hashlib
 import datetime
 from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark import Session
 
-session = get_active_session()
+@st.cache_resource
+def get_session():
+    return Session.builder.configs({
+        "account": st.secrets["snowflake"]["account"],
+        "user": st.secrets["snowflake"]["user"],
+        "password": st.secrets["snowflake"]["password"],
+        "warehouse": st.secrets["snowflake"]["warehouse"],
+        "role": st.secrets["snowflake"]["role"],
+    }).create()
+
+session = get_session()
 
 
 def hash_password(password):
