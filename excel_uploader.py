@@ -1,6 +1,6 @@
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 import pandas as pd
+from snowflake.snowpark import Session
 
 @st.cache_resource
 def get_session():
@@ -8,8 +8,8 @@ def get_session():
         "account": st.secrets["snowflake"]["account"],
         "user": st.secrets["snowflake"]["user"],
         "password": st.secrets["snowflake"]["password"],
-        "warehouse": st.secrets["snowflake"]["warehouse"],
         "role": st.secrets["snowflake"]["role"],
+        "warehouse": st.secrets["snowflake"]["warehouse"],
     }).create()
 
 session = get_session()
