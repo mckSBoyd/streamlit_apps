@@ -2,7 +2,17 @@ import streamlit as st
 from snowflake.snowpark.context import get_active_session
 import pandas as pd
 
-session = get_active_session()
+@st.cache_resource
+def get_session():
+    return Session.builder.configs({
+        "account": st.secrets["snowflake"]["account"],
+        "user": st.secrets["snowflake"]["user"],
+        "password": st.secrets["snowflake"]["password"],
+        "warehouse": st.secrets["snowflake"]["warehouse"],
+        "role": st.secrets["snowflake"]["role"],
+    }).create()
+
+session = get_session()
 
 st.title("Excel to Snowflake Loader")
 
