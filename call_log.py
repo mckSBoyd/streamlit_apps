@@ -350,7 +350,7 @@ with tab_log:
     # ── Log Table ───────────────────────────────────────────────────
     if not filtered:
         if search:
-            st.info(f"No entries match "{search}".")
+            st.info(f"No entries match '{search}'.")
         else:
             st.info("No calls logged yet. Use the form above to add your first entry.")
     else:
